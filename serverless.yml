@@ -1,0 +1,43 @@
+org: sotacode
+app: sotacode-api
+service: sotacode-api
+frameworkVersion: '3'
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  httpApi:
+    cors:
+      allowedOrigins:
+        - 'https://portfolio-sotacode.vercel.app'
+      allowedHeaders:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+      allowCredentials: false
+  environment:
+    EMAIL_CONTACT: ${env:EMAIL_ORIGIN_CONTACT}
+    EMAIL_PASSWORD: ${env:EMAIL_ORIGIN_PASSWORD}
+    EMAIL_TO_SEND: ${env:EMAIL_TO_SEND}
+
+custom:
+  myStage: ${opt:stage, 'dev'}
+
+functions:
+  send-email:
+    handler: functions/sendEmail.handler
+    timeout: 25
+    events:
+      - httpApi:
+          path: /send-email
+          method: post
+
