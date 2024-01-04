@@ -1,6 +1,6 @@
 org: sotacode
-app: sotacode-api
-service: sotacode-api
+app: osmoz-api
+service: osmoz-api
 frameworkVersion: '3'
 
 useDotenv: true
